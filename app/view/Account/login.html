@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link href="/static/css/index.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<canvas class="cavs" width="1575" height="1337"></canvas>
+
+<div class="loginmain">
+    <div class="login-title">
+        <span>管理员登录</span>
+    </div>
+
+    <div class="login-con">
+        <div class="login-user">
+            <div class="icon">
+                <img src="/static/image/user_icon_copy.png" alt="">
+            </div>
+            <input type="text" name="username" id="username" placeholder="用户名" autocomplete="off" value="">
+        </div>
+        <div class="login-pwd">
+            <div class="icon">
+                <img src="/static/image/lock_icon_copy.png" alt="">
+            </div>
+            <input type="password" name="pwd" id="pwd" placeholder="密码" autocomplete="off" value="">
+        </div>
+        <!--        <div class="login-yan">-->
+        <!--            <div class="icon">-->
+        <!--                <img src="/static/image/key.png" alt="">-->
+        <!--            </div>-->
+        <!--            <input type="text" name="pwd" placeholder="验证码" autocomplete="off" value="">-->
+        <!--        </div>-->
+        <div class="login-btn">
+            <input type="button" onclick="doLogin()" value="登录">
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+
+    function doLogin() {
+        const username = $.trim($('#username').val());
+        const pwd = $.trim($('#pwd').val());
+        if (username === '') {
+            parent.layer.msg('请输入用户名');
+            return;
+        }
+        if (pwd === '') {
+            parent.layer.msg('请输入密码');
+            return;
+        }
+        $.post('/account/dologin', {'username': username, 'pwd': pwd}, function (res) {
+            if (res.code > 200) {
+                parent.layer.alert(res.message, {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
+            } else {
+                parent.layer.msg('登陆成功!');
+                setTimeout(function () {
+                    window.location.href = '/'
+                }, 100)
+            }
+        }, 'json');
+    }
+
+</script>
+<script src="/static/js/jquery-1.7.2.js"></script>
+<script src="/static/js/ban.js"></script>
+
+<!-- 全局js -->
+<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- layer javascript -->
+<script src="/static/js/plugins/layer/layer.min.js"></script>

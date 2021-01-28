@@ -15,4 +15,8 @@ class Index extends BaseController
     {
         return View::fetch();
     }
+    public function test()
+    {
+        return View::fetch();
+    }
 }

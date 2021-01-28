@@ -46,20 +46,20 @@ abstract class BaseController
     public function __construct(App $app)
     {
         $this->app     = $app;
-        $this->request = $this->app->request;
+//        $this->request = $this->app->request;
 
-////        // 控制器初始化
-//        $this->initialize();
-//        if (empty($_COOKIE['user'])) {
-//            header('Location:account/login');
-//            exit;
-//        } else {
-//            $this->_admin = $_COOKIE['user'];
-////            $this->_admin=unserialize($this->_admin);
-//        }
-//        View::assign([
-////            'admin' => $this->_admin
-//        ]);
+//        // 控制器初始化
+        $this->initialize();
+        if (empty($_COOKIE['user'])) {
+            header('Location:account/login');
+            exit;
+        } else {
+            $this->_admin = $_COOKIE['user'];
+//            $this->_admin=unserialize($this->_admin);
+        }
+        View::assign([
+            'admin' => $this->_admin
+        ]);
     }
 
     // 初始化

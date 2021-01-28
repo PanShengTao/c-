@@ -17,3 +17,5 @@ php think run
 
 View 模板
 composer require topthink/think-view
+验证码功能
+composer require topthink/think-captcha

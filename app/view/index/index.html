@@ -32,17 +32,23 @@
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
+                            <span><img alt="image" class="img-circle" style="height: 70px;width: 70px" src="/static/img/profile_small.jpg" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <span class="clear">
-                                    <span class="block m-t-xs" style="font-size:20px;">
-                                        <i class="fa fa-area-chart"></i>
-                                        <strong class="font-bold">hAdmin</strong>
-                                    </span>
-                                </span>
+									<span class="clear">
+										<span class="block m-t-xs"><strong class="font-bold">{$admin}</strong></span>
+										<span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+									</span>
                             </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="J_menuItem" href="">修改头像</a></li>
+                                <li><a class="J_menuItem" href="">个人资料</a></li>
+                                <li><a class="J_menuItem" href="">联系我们</a></li>
+                                <li><a class="J_menuItem" href="">信箱</a></li>
+                                <li class="divider"></li>
+                                <li><a href="login.html">安全退出</a></li>
+                            </ul>
                         </div>
-                        <div class="logo-element">hAdmin
-                        </div>
+                        <div class="logo-element">H+</div>
                     </li>
                     <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                         <span class="ng-scope"></span>

@@ -19,3 +19,7 @@ View 模板
 composer require topthink/think-view
 验证码功能
 composer require topthink/think-captcha
+token校验
+composer require firebase/php-jwt
+添加中间件验证功能
+php think make:middleware Check

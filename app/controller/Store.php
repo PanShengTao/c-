@@ -12,9 +12,9 @@ class Store
 {
     public function session()
     {
-        Session::set('user', 'Mr.Lee');
+        Session::set('12345', 'Mr.Lee');
 //        return Session::get('user');
-        return Session::has("");
+        return Session::get("12345");
     }
 
     public function cookie()
@@ -33,10 +33,10 @@ class Store
 //        Cache::delete('user');
         Cache::pull('user');
         dump(Cache::remember("start_time", time()));
-        Cache::clear();
+//        Cache::clear();
 
         Cache::tag('tag')->set("age",100);
-        Cache::tag("tag")->clear();
+//        Cache::tag("tag")->clear();
     }
 
 }

@@ -56,13 +56,10 @@
             return;
         }
         $.post('/account/dologin', {'username': username, 'pwd': pwd}, function (res) {
-            if (res.code > 200) {
-                parent.layer.alert(res.message, {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                });
+            if (res.code !== 200) {
+                parent.layer.msg(res.message);
             } else {
-                parent.layer.msg('登陆成功!');
+                parent.layer.msg(res.message);
                 setTimeout(function () {
                     window.location.href = '/'
                 }, 100)

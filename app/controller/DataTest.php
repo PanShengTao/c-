@@ -5,6 +5,7 @@ namespace app\controller;
 
 
 use app\model\Config;
+use app\model\User;
 use think\facade\Db;
 
 class DataTest
@@ -22,8 +23,8 @@ class DataTest
 
     public function getConfig()
     {
-        $users = Config::select();
-        return json($users);
+       dump((new User())->Login('18385642411','1231456')) ;
+        return 1;
     }
     public function time(){
         $users = Db::name('config')->where("set_time","between","[2018-1-1,2020-1-1]")->select();

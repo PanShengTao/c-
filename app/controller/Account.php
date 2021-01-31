@@ -3,40 +3,44 @@
 
 namespace app\controller;
 
-use think\facade\View;
+use app\model\User;
+use think\facade\Cache;
 use think\facade\Cookie;
+use think\facade\Session;
+use think\facade\View;
+
 class Account
 {
+
     public function login()
     {
         return View::fetch();
     }
-    public function TestJson(){
 
-        $data['code']=1;
-        $data['message']='asdfasdf';
-
-        return json($data);
-    }
     public function dologin()
     {
 
-        $user['username'] = (string)trim(input('post.username'));
-        $user['userpawd'] = (string)trim(input('post.pwd'));
-        $data['code'] = 0;
-        if ($user['username'] === '') {
+        $username = (string)trim(input('post.username'));
+        $userpawd = (string)trim(input('post.pwd'));
+        $data['code'] = -1;
+        $user = (new User())->Login($username, $userpawd);
+        if (empty($user)) {
+            $data['message'] = "用户名或密码不正确";
             $data['code'] = -1;
-            $data['message'] = "用户名不存在";
-            return $data;;
+            return $data;
         }
-        if ($user['userpawd'] === '123456') {
-            $data['message'] = "密码不可以为连续数字";
-            $data['code'] = -1;
-            return $data;;
-        }
-//        $obj_user=serialize($user);
-        Cookie::set('user',$user['username'],3600*24*30);
-        $data['message'] = "登陆成功";
+        Cache::set($user['username'], Session::getId());
+        $serialize = serialize($user);
+        Cookie::set('user', $serialize, 3600 * 24 * 30);
+        $data['code'] = 200;
+        $data['message'] = '登录成功';
         return $data;;
+    }
+
+    private function makeToken()
+    {
+        $str = md5(uniqid(md5(microtime(true)), true)); //生成一个不会重复的字符串
+        $str = sha1($str); //加密
+        return $str;
     }
 }

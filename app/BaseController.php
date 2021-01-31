@@ -5,6 +5,7 @@ namespace app;
 
 use think\App;
 use think\exception\ValidateException;
+use think\facade\Cache;
 use think\facade\View;
 use think\Validate;
 
@@ -36,7 +37,6 @@ abstract class BaseController
      * @var array
      */
     protected $middleware = [];
-    private $_admin;
 
     /**
      * 构造方法
@@ -45,21 +45,38 @@ abstract class BaseController
      */
     public function __construct(App $app)
     {
-        $this->app     = $app;
-//        $this->request = $this->app->request;
-
-//        // 控制器初始化
+        $this->app = $app;
+        $this->request = $this->app->request;
+        // 控制器初始化
         $this->initialize();
         if (empty($_COOKIE['user'])) {
             header('Location:account/login');
             exit;
-        } else {
-            $this->_admin = $_COOKIE['user'];
-//            $this->_admin=unserialize($this->_admin);
         }
-        View::assign([
-            'admin' => $this->_admin
-        ]);
+        if (empty($_COOKIE['PHPSESSID'])) {
+            header('Location:account/login');
+            exit;
+        }
+        $user = unserialize($_COOKIE['user']);
+        $username = '';
+        if (!empty($user['username'])) {
+            $username = $user['username'];
+        }
+        $userrole = '普通用户';
+        if (!empty($user['userrole']) && $user['userrole'] === 1) {
+            $userrole = '超级管理员';
+        }
+        $var = Cache::get($user['username'], '');
+        if ($_COOKIE['PHPSESSID'] == $var) {
+            View::assign([
+                'admin' => $username,
+                'role' => $userrole,
+            ]);
+        } else {
+            header('Location:account/login');
+            exit;
+        }
+
     }
 
     // 初始化

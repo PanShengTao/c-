@@ -50,11 +50,11 @@ abstract class BaseController
         // 控制器初始化
         $this->initialize();
         if (empty($_COOKIE['user'])) {
-            header('Location:account/login');
+            header('Location:/index.php/account/login');
             exit;
         }
         if (empty($_COOKIE['PHPSESSID'])) {
-            header('Location:account/login');
+            header('Location:/index.php/account/login');
             exit;
         }
         $user = unserialize($_COOKIE['user']);
@@ -73,7 +73,7 @@ abstract class BaseController
                 'role' => $userrole,
             ]);
         } else {
-            header('Location:account/login');
+            header('Location:/index.php/account/login');
             exit;
         }
 

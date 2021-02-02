@@ -12,7 +12,7 @@
     <meta name="description" content="">
 
     <!--[if lt IE 9]>
-    <meta http-equiv="refresh" content="0;ie.html" />
+    <meta http-equiv="refresh" content="0;ie.html"/>
     <![endif]-->
 
     <link rel="shortcut icon" href="favicon.ico">
@@ -23,121 +23,136 @@
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
-    <div id="wrapper">
-        <!--左侧导航开始-->
-        <nav class="navbar-default navbar-static-side" role="navigation">
-            <div class="nav-close"><i class="fa fa-times-circle"></i>
-            </div>
-            <div class="sidebar-collapse">
-                <ul class="nav" id="side-menu">
-                    <li class="nav-header">
-                        <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" style="height: 70px;width: 70px" src="/static/img/profile_small.jpg" /></span>
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+<div id="wrapper">
+    <!--左侧导航开始-->
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="nav-close"><i class="fa fa-times-circle"></i>
+        </div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <span><img id="head_img" alt="image" class="img-circle" style="height: 70px;width: 70px"
+                                   src=""/></span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
 									<span class="clear">
 										<span class="block m-t-xs"><strong class="font-bold">{$admin}</strong></span>
 										<span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
 									</span>
-                            </a>
-                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a class="J_menuItem" href="">修改头像</a></li>
-                                <li><a class="J_menuItem" href="">个人资料</a></li>
-                                <li><a class="J_menuItem" href="">联系我们</a></li>
-                                <li><a class="J_menuItem" href="">信箱</a></li>
-                                <li class="divider"></li>
-                                <li><a href="login.html">安全退出</a></li>
-                            </ul>
-                        </div>
-                        <div class="logo-element">H+</div>
-                    </li>
-                    <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
-                        <span class="ng-scope"></span>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="index/home">
-                            <i class="fa fa-home"></i>
-                            <span class="nav-label">主页</span>
                         </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa fa-bar-chart-o"></i>
-                            <span class="nav-label">统计图表</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="">访问访统计</a>
-                            </li>
+                        <form action="/index.php/upload/upload/" target="_mywin" method="post" enctype="multipart/form-data">
+                            <input type="file" name="image" id="ipt_file" style="display:none;">
+                            <input type="submit" id="btn_file" style="display: none">
+                        </form>
+                        <iframe name="_mywin" frameborder="1" src="" style="display: none"></iframe>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a class="J_menuItem" href="" onclick="doSubmit()">修改头像</a></li>
+                            <li><a class="J_menuItem" href="">个人资料</a></li>
+                            <li><a class="J_menuItem" href="">联系我们</a></li>
+                            <li><a class="J_menuItem" href="">信箱</a></li>
+                            <li class="divider"></li>
+                            <li><a href="login.html">安全退出</a></li>
                         </ul>
-                    </li>
-                    <li class="line dk"></li>
-                    <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
-                        <span class="ng-scope"></span>
-                    </li>
-                    <li>
-                        <a href="mailbox.html"><i class="fa fa-gears"></i> <span class="nav-label">管理 </span></a>
-                        <ul class="nav nav-second-level">
-                            <li><a class="J_menuItem" href="">人员管理</a>
-                            </li>
-                            <li><a class="J_menuItem" href="">上次文件</a>
-                            </li>
-                            <li><a class="J_menuItem" href="">个人资料</a>
-                            </li>
-                        </ul>
-                    </li>
-
-
-                </ul>
-            </div>
-        </nav>
-        <!--左侧导航结束-->
-        <!--右侧部分开始-->
-        <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="row border-bottom">
-                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-                    <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-info " href="#"><i class="fa fa-bars"></i> </a>
-<!--                        <form role="search" class="navbar-form-custom" method="post" action="search_results.html">-->
-<!--                            <div class="form-group">-->
-<!--                                <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">-->
-<!--                            </div>-->
-<!--                        </form>-->
                     </div>
-                    <ul class="nav navbar-top-links navbar-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-upload">上传</i>
-                            </a>
-                        </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <span>{$admin}  </span><i class="fa fa-sign-out">退出</i>
-                            </a>
+                    <div class="logo-element">H+</div>
+                </li>
+                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                    <span class="ng-scope"></span>
+                </li>
+                <li>
+                    <a class="J_menuItem" href="/index.php/index/home">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">主页</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa fa-bar-chart-o"></i>
+                        <span class="nav-label">统计图表</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem" href="">访问访统计</a>
                         </li>
                     </ul>
-                </nav>
-            </div>
-            <div class="row J_mainContent" id="content-main">
-                <iframe id="J_iframe" width="100%" height="100%" src="index/home?v=4.0" frameborder="0" data-id="home.html" seamless></iframe>
-            </div>
+                </li>
+                <li class="line dk"></li>
+                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                    <span class="ng-scope"></span>
+                </li>
+                <li>
+                    <a href="mailbox.html"><i class="fa fa-gears"></i> <span class="nav-label">管理 </span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a class="J_menuItem" href="">人员管理</a>
+                        </li>
+                        <li><a class="J_menuItem" href="">上次文件</a>
+                        </li>
+                        <li><a class="J_menuItem" href="">个人资料</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+            </ul>
         </div>
-        <!--右侧部分结束-->
+    </nav>
+    <!--左侧导航结束-->
+    <!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-info " href="#"><i
+                        class="fa fa-bars"></i> </a>
+                    <!--                        <form role="search" class="navbar-form-custom" method="post" action="search_results.html">-->
+                    <!--                            <div class="form-group">-->
+                    <!--                                <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">-->
+                    <!--                            </div>-->
+                    <!--                        </form>-->
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <i class="fa fa-upload">上传</i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <span>{$admin}  </span><i class="fa fa-sign-out">退出</i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row J_mainContent" id="content-main">
+            <iframe id="J_iframe" width="100%" height="100%" src="/index.php/index/home?v=4.0" frameborder="0" data-id="home.html"
+                    seamless></iframe>
+        </div>
     </div>
+    <!--右侧部分结束-->
+</div>
 
-    <!-- 全局js -->
-    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
-    <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
-    <script src="/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="/static/js/plugins/layer/layer.min.js"></script>
+<!-- 全局js -->
+<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/static/js/plugins/layer/layer.min.js"></script>
 
-    <!-- 自定义js -->
-    <script src="/static/js/hAdmin.js?v=4.1.0"></script>
-    <script type="text/javascript" src="/static/js/index.js"></script>
+<!-- 自定义js -->
+<script src="/static/js/hAdmin.js?v=4.1.0"></script>
+<script type="text/javascript" src="/static/js/index.js"></script>
 
-    <!-- 第三方插件 -->
-    <script src="/static/js/plugins/pace/pace.min.js"></script>
+<!-- 第三方插件 -->
+<script src="/static/js/plugins/pace/pace.min.js"></script>
 
 </body>
-
+<script type="text/javascript">
+    function doSubmit() {
+        $('#ipt_file').click();
+        $("#ipt_file").on("change",function(){
+            $('#btn_file').click();
+        });
+    }
+</script>
 </html>

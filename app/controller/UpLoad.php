@@ -11,11 +11,13 @@ use think\facade\View;
 
 class UpLoad
 {
-    public function index(){
+    public function index()
+    {
         return View::fetch('upload');
     }
 
-    public function upload(){
+    public function upload()
+    {
         $uploadedFile = Request::file('image');
 
         //编写规则
@@ -26,20 +28,24 @@ class UpLoad
         $result = $validate->check([
             'image' => $uploadedFile
         ]);
-
-        if ($result){
-            $putfile = Filesystem::putfile('headImg', $uploadedFile);
-            dump($putfile);
-        }else{
-            dump($validate->getError());
+        if ($result) {
+            $putfile = '/uploadFile/'.Filesystem::putfile('headImg', $uploadedFile);
+            $str_replace = str_replace("\\",'//',$putfile);
+            echo "<script> headImg = top.document.getElementById('head_img');
+                            headImg.src='{$str_replace}';
+                    </script>";
+        } else {
+            echo "<script> parent.layer.msg('{$validate->getError()}');</script>";
         }
 
 
     }
-    public function upLoadList(){
+
+    public function upLoadList()
+    {
         $uploadedFiles = Request::file('image');
-        $putfiles=[];
-        foreach ($uploadedFiles as $file){
+        $putfiles = [];
+        foreach ($uploadedFiles as $file) {
             $putfiles[] = Filesystem::putfile('headImg', $file);
         }
         dump($putfiles);

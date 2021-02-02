@@ -55,13 +55,13 @@
             parent.layer.msg('请输入密码');
             return;
         }
-        $.post('/account/dologin', {'username': username, 'pwd': pwd}, function (res) {
+        $.post('/index.php/account/dologin', {'username': username, 'pwd': pwd}, function (res) {
             if (res.code !== 200) {
                 parent.layer.msg(res.message);
             } else {
                 parent.layer.msg(res.message);
                 setTimeout(function () {
-                    window.location.href = '/'
+                    window.location.href = '/index.php/index'
                 }, 100)
             }
         }, 'json');

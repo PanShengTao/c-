@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
 
-    <title> hAdmin- 主页</title>
+    <title>首页</title>
 
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -33,11 +33,11 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         <span><img id="head_img" alt="image" class="img-circle" style="height: 70px;width: 70px"
-                                   src=""/></span>
+                                   src="{$img}"/></span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
 									<span class="clear">
-										<span class="block m-t-xs"><strong class="font-bold">{$admin}</strong></span>
-										<span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+										<span class="block m-t-xs"><strong class="font-bold">{$admin->username}</strong></span>
+										<span class="text-muted text-xs block">{$admin->role}<b class="caret"></b></span>
 									</span>
                         </a>
                         <form action="/index.php/upload/upload/" target="_mywin" method="post" enctype="multipart/form-data">
@@ -118,7 +118,7 @@
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                            <span>{$admin}  </span><i class="fa fa-sign-out">退出</i>
+                            <span>{$admin->username}  </span><i class="fa fa-sign-out">退出</i>
                         </a>
                     </li>
                 </ul>

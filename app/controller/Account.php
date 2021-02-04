@@ -4,9 +4,7 @@
 namespace app\controller;
 
 use app\model\User;
-use think\facade\Cache;
 use think\facade\Cookie;
-use think\facade\Session;
 use think\facade\View;
 
 class Account
@@ -19,19 +17,16 @@ class Account
 
     public function dologin()
     {
-
         $username = (string)trim(input('post.username'));
         $userpawd = (string)trim(input('post.pwd'));
         $data['code'] = -1;
-        $user = (new User())->Login($username, $userpawd);
-        if (empty($user)) {
+        $token = (new User())->Login($username, $userpawd);
+        if (empty($token)) {
             $data['message'] = "用户名或密码不正确";
             $data['code'] = -1;
             return $data;
         }
-        Cache::set($user['username'], Session::getId());
-        $serialize = serialize($user);
-        Cookie::set('user', $serialize, 3600 * 24 * 30);
+        Cookie::set('token', $token, 3600 * 24 * 30);
         $data['code'] = 200;
         $data['message'] = '登录成功';
         return $data;;

@@ -3,20 +3,24 @@
 namespace app\middleware;
 
 use app\model\User;
+use think\facade\Cache;
 
 class Token
 {
     public function handle($request, \Closure $next)
     {
-		$token = $request->header('token');
-		$data = explode('.', $token);
-		if (count($data) == 3) {
-			$request->user_id = (new User())->token_check($token);
-		}else{
-			$request->user_id = 0;
-		}
-
-		return $next($request);
+        $token = $request->cookie("token");
+        $checkToken = (new User())->checkToken((string)$token);
+        if ($checkToken['code'] === 1) {
+            $request->uid = $checkToken['data']->uid;
+            $var = Cache::get("" . $checkToken["data"]->uid, 1);
+            if ($checkToken["time"] !== intval($var)) {
+                return redirect('/index.php/account/login');
+            }
+        } else {
+            return redirect('/index.php/account/login');
+        }
+        return $next($request);
     }
 
 }

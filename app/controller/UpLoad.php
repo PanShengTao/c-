@@ -4,6 +4,7 @@
 namespace app\controller;
 
 
+use app\model\User;
 use think\facade\Filesystem;
 use think\facade\Request;
 use think\facade\Validate;
@@ -19,7 +20,6 @@ class UpLoad
     public function upload()
     {
         $uploadedFile = Request::file('image');
-
         //编写规则
         $validate = Validate::rule([
             'image' => 'file|fileExt:jpg,png,gif',
@@ -28,16 +28,29 @@ class UpLoad
         $result = $validate->check([
             'image' => $uploadedFile
         ]);
-        if ($result) {
-            $putfile = '/uploadFile/'.Filesystem::putfile('headImg', $uploadedFile);
-            $str_replace = str_replace("\\",'//',$putfile);
+        $uid = -1;
+        if (!empty($_COOKIE['token'])) {
+            $token = $_COOKIE['token'];
+            $checkToken = (new User())->checkToken($token);
+            if ($checkToken["code"] === 1) {
+                $uid = $checkToken["data"]->uid;
+            }
+        }
+
+
+        if ($result && $uid !== -1) {
+            $putfile = '/uploadFile/' . Filesystem::putfile('headImg', $uploadedFile);
+            $str_replace = str_replace("\\", '//', $putfile);
+            (new User())::update([
+                'id' => $uid,
+                "userimg" => $str_replace,
+            ]);
             echo "<script> headImg = top.document.getElementById('head_img');
                             headImg.src='{$str_replace}';
                     </script>";
         } else {
             echo "<script> parent.layer.msg('{$validate->getError()}');</script>";
         }
-
 
     }
 

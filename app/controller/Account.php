@@ -15,7 +15,7 @@ class Account
         return View::fetch();
     }
 
-    public function dologin()
+    public function doLogin()
     {
         $username = (string)trim(input('post.username'));
         $userpawd = (string)trim(input('post.pwd'));
@@ -31,11 +31,17 @@ class Account
         $data['message'] = '登录成功';
         return $data;;
     }
-
-    private function makeToken()
+    public function doExit()
     {
-        $str = md5(uniqid(md5(microtime(true)), true)); //生成一个不会重复的字符串
-        $str = sha1($str); //加密
-        return $str;
+        Cookie::set('token', "", 3600 * 24 * 30);
+        $data['code'] = 200;
+        $data['message'] = '退出成功';
+        return $data;;
     }
+//    private function makeToken()
+//    {
+//        $str = md5(uniqid(md5(microtime(true)), true)); //生成一个不会重复的字符串
+//        $str = sha1($str); //加密
+//        return $str;
+//    }
 }

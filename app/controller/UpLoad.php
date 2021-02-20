@@ -4,13 +4,15 @@
 namespace app\controller;
 
 
+use app\BaseController;
+use app\model\Brand;
 use app\model\User;
 use think\facade\Filesystem;
 use think\facade\Request;
 use think\facade\Validate;
 use think\facade\View;
 
-class UpLoad
+class UpLoad extends BaseController
 {
     public function index()
     {
@@ -28,16 +30,7 @@ class UpLoad
         $result = $validate->check([
             'image' => $uploadedFile
         ]);
-        $uid = -1;
-        if (!empty($_COOKIE['token'])) {
-            $token = $_COOKIE['token'];
-            $checkToken = (new User())->checkToken($token);
-            if ($checkToken["code"] === 1) {
-                $uid = $checkToken["data"]->uid;
-            }
-        }
-
-
+        $uid = $this->request->uid;
         if ($result && $uid !== -1) {
             $putfile = '/uploadFile/' . Filesystem::putfile('headImg', $uploadedFile);
             $str_replace = str_replace("\\", '//', $putfile);
@@ -48,6 +41,40 @@ class UpLoad
             echo "<script> headImg = top.document.getElementById('head_img');
                             headImg.src='{$str_replace}';
                     </script>";
+        } else {
+            echo "<script> parent.layer.msg('{$validate->getError()}');</script>";
+        }
+
+    }
+
+    public function uploadXlsx()
+    {
+        $uploadedFile = Request::file('xlsx');
+        //编写规则
+        $validate = Validate::rule([
+            'xlsx' => 'file|fileExt:xlsx,xls,excel',
+        ]);
+        //验证规则
+        $result = $validate->check([
+            'xlsx' => $uploadedFile
+        ]);
+
+        $uname = $this->request->uname;
+        if ($result) {
+            $identify = \PHPExcel_IOFactory::identify($uploadedFile);
+            $reader = \PHPExcel_IOFactory::createReader($identify);
+            $PHPExcel = $reader->load($uploadedFile);
+            $sheet = $PHPExcel->getSheet(0);//第一个工作表
+            $sheetContent = $sheet->toArray();
+            unset($sheetContent[0]);
+            foreach ($sheetContent as $k => $value) {
+                $arr['name'] = $value[0];
+                $arr['uname']=$uname;
+                $arr['createtime'] =time();
+                $res[] = $arr;
+            }
+            $insert = (new Brand())->insertAll($res);
+            echo "<script> parent.layer.msg('上传成功');</script>";
         } else {
             echo "<script> parent.layer.msg('{$validate->getError()}');</script>";
         }

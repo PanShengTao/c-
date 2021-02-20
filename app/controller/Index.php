@@ -3,6 +3,7 @@
 namespace app\controller;
 
 use app\BaseController;
+use app\model\Brand;
 use app\model\User;
 use think\facade\View;
 
@@ -22,9 +23,18 @@ class Index extends BaseController
 
     public function home()
     {
-        return View::fetch();
+        $brandList = (new Brand())->select();
+        return View::fetch('home',[
+            'brandList'=>$brandList,
+        ]);
     }
-
+    public function user()
+    {
+        $userList = (new User())->select();
+        return View::fetch('user',[
+            'userList'=>$userList,
+        ]);
+    }
     public function test()
     {
         return View::fetch();

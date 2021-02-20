@@ -13,6 +13,7 @@ class Token
         $checkToken = (new User())->checkToken((string)$token);
         if ($checkToken['code'] === 1) {
             $request->uid = $checkToken['data']->uid;
+            $request->uname = $checkToken['data']->name;
             $var = Cache::get("" . $checkToken["data"]->uid, 1);
             if ($checkToken["time"] !== intval($var)) {
                 return redirect('/index.php/account/login');

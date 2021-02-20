@@ -37,10 +37,12 @@
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
 									<span class="clear">
 										<span class="block m-t-xs"><strong class="font-bold">{$admin->username}</strong></span>
-										<span class="text-muted text-xs block">{$admin->role}<b class="caret"></b></span>
+										<span class="text-muted text-xs block">{$admin->role}<b
+                                                class="caret"></b></span>
 									</span>
                         </a>
-                        <form action="/index.php/upload/upload/" target="_mywin" method="post" enctype="multipart/form-data">
+                        <form action="/index.php/upload/upload/" target="_mywin" method="post"
+                              enctype="multipart/form-data">
                             <input type="file" name="image" id="ipt_file" style="display:none;">
                             <input type="submit" id="btn_file" style="display: none">
                         </form>
@@ -65,35 +67,41 @@
                         <span class="nav-label">主页</span>
                     </a>
                 </li>
+                {eq name="$admin->userrole" value="1"}
                 <li>
-                    <a href="#">
-                        <i class="fa fa fa-bar-chart-o"></i>
-                        <span class="nav-label">统计图表</span>
-                        <span class="fa arrow"></span>
+                    <a class="J_menuItem" href="/index.php/index/user">
+                        <i class="fa fa-user"></i>
+                        <span class="nav-label">人员管理</span>
                     </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="">访问访统计</a>
-                        </li>
-                    </ul>
                 </li>
-                <li class="line dk"></li>
-                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
-                    <span class="ng-scope"></span>
-                </li>
-                <li>
-                    <a href="mailbox.html"><i class="fa fa-gears"></i> <span class="nav-label">管理 </span></a>
-                    <ul class="nav nav-second-level">
-                        <li><a class="J_menuItem" href="">人员管理</a>
-                        </li>
-                        <li><a class="J_menuItem" href="">上次文件</a>
-                        </li>
-                        <li><a class="J_menuItem" href="">个人资料</a>
-                        </li>
-                    </ul>
-                </li>
-
-
+                {/eq}
+                <!--                <li>-->
+                <!--                    <a href="#">-->
+                <!--                        <i class="fa fa fa-bar-chart-o"></i>-->
+                <!--                        <span class="nav-label">统计图表</span>-->
+                <!--                        <span class="fa arrow"></span>-->
+                <!--                    </a>-->
+                <!--                    <ul class="nav nav-second-level">-->
+                <!--                        <li>-->
+                <!--                            <a class="J_menuItem" href="">访问访统计</a>-->
+                <!--                        </li>-->
+                <!--                    </ul>-->
+                <!--                </li>-->
+                <!--                <li class="line dk"></li>-->
+                <!--                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">-->
+                <!--                    <span class="ng-scope"></span>-->
+                <!--                </li>-->
+                <!--                <li>-->
+                <!--                    <a href="mailbox.html"><i class="fa fa-gears"></i> <span class="nav-label">管理 </span></a>-->
+                <!--                    <ul class="nav nav-second-level">-->
+                <!--                        <li><a class="J_menuItem" href="">人员管理</a>-->
+                <!--                        </li>-->
+                <!--                        <li><a class="J_menuItem" href="">上次文件</a>-->
+                <!--                        </li>-->
+                <!--                        <li><a class="J_menuItem" href="">个人资料</a>-->
+                <!--                        </li>-->
+                <!--                    </ul>-->
+                <!--                </li>-->
             </ul>
         </div>
     </nav>
@@ -111,12 +119,19 @@
                     <!--                        </form>-->
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
+                    {eq name="$admin->userrole" value="1"}
                     <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <form action="/index.php/upload/uploadXlsx/" target="_mywin" method="post"
+                              enctype="multipart/form-data">
+                            <input type="file" name="xlsx" id="input_xlsx" style="display:none;">
+                            <input type="submit" id="btn_xlsx" style="display: none">
+                        </form>
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="" onclick="uploadXlsx()">
                             <i class="fa fa-upload">上传</i>
                         </a>
                     </li>
-                    <li class="dropdown">
+                    {/eq}
+                    <li class="dropdown" onclick="doExit()">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                             <span>{$admin->username}  </span><i class="fa fa-sign-out">退出</i>
                         </a>
@@ -125,7 +140,8 @@
             </nav>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe id="J_iframe" width="100%" height="100%" src="/index.php/index/home?v=4.0" frameborder="0" data-id="home.html"
+            <iframe id="J_iframe" width="100%" height="100%" src="/index.php/index/home?v=4.0" frameborder="0"
+                    data-id="home.html"
                     seamless></iframe>
         </div>
     </div>
@@ -150,8 +166,29 @@
 <script type="text/javascript">
     function doSubmit() {
         $('#ipt_file').click();
-        $("#ipt_file").on("change",function(){
+        $("#ipt_file").on("change", function () {
             $('#btn_file').click();
+        });
+    }
+
+    function uploadXlsx() {
+        $('#input_xlsx').click();
+        $("#input_xlsx").on("change", function () {
+            $('#btn_xlsx').click();
+        });
+    }
+
+    function doExit() {
+        parent.layer.confirm('是否退出当前登录账号？', {
+            btn: ['退出', '取消'], //按钮
+            shade: false //不显示遮罩
+        }, function () {
+            $.post('/index.php/account/doExit', {}, function (res) {
+                parent.layer.msg(res.message);
+                setTimeout(function () {
+                    window.location.href = '/index.php/index'
+                }, 100)
+            }, 'json');
         });
     }
 </script>

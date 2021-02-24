@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/static/css/search.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link href="/static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</head>
+<body class="body">
+<a class="exit-btn" data-toggle="dropdown" onclick="doExit()">
+    <span></span><i class="fa fa-sign-out">退出</i>
+</a>
+<div class="search-box">
+    <input class="search-txt" type="text" id="searchName" placeholder="输入品牌名称！">
+    <a class="search-btn" onclick="doSearch()">
+        <i class="fa fa-search"></i>
+    </a>
+</div>
+<!-- 全局js -->
+<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- Sweet alert -->
+<script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- layer javascript -->
+<script src="/static/js/plugins/layer/layer.min.js"></script>
+<script>
+    function doSearch() {
+        const searchName = $('#searchName').val();
+        if (searchName === '') {
+            return;
+        }
+        $.post('/index.php/search/brand', {'searchName': searchName}, function (res) {
+            if (res.code === 200) {
+                swal('搜索成功', res.message, "success");
+            } else {
+                swal("品牌不存在", res.message, "error");
+            }
+        }, 'json');
+    }
+
+    function doExit() {
+        parent.layer.confirm('是否退出当前登录账号？', {
+            btn: ['退出', '取消'], //按钮
+            shade: false //不显示遮罩
+        }, function () {
+            $.post('/index.php/account/doExit', {}, function (res) {
+                parent.layer.msg(res.message);
+                setTimeout(function () {
+                    window.location.href = '/index.php/index'
+                }, 100)
+            }, 'json');
+        });
+    }
+</script>
+</body>
+
+</html>

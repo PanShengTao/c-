@@ -11,7 +11,8 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico"> <link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="/static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
     <!-- Data Tables -->
@@ -25,134 +26,255 @@
 </head>
 
 <body class="gray-bg">
-    <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>用户管理</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="table_data_tables.html#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li><a href="#">选项1</a>
-                                </li>
-                                <li><a href="#">选项2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>用户管理</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="table_data_tables.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#">选项1</a>
+                            </li>
+                            <li><a href="#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
                     </div>
-                    <div class="ibox-content">
+                </div>
 
-                        <table class="table table-striped table-bordered table-hover " >
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>用户名</th>
-                                    <th>手机号码</th>
-                                    <th>管理</th>
-<!--                                    <th>添加人</th>-->
-<!--                                    <th>创建时间</th>-->
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {foreach $userList as $key=>$obj}
-                            <tr class="gradeX">
-                                <td>{$obj->id}</td>
-                                <td>{$obj->username}</td>
-                                <td>{$obj->phone}</td>
-                                <td><a style="color: red" onclick="deleteUser('{$obj->id}','{$obj->username}')">删除</a></td>
-<!--                                <td class="center">{$obj->uid}</td>-->
-<!--                                <td class="center"><?php echo date('Y-m-d H:i:s',$obj->createtime) ?></td>-->
-                            </tr>
-                            {/foreach}
-                            </tbody>
-
-                        </table>
-
+                <div class="ibox-content">
+                    <div class="">
+                        <button class="btn btn-success " type="button" onclick="doAddOnClick()"><i
+                                class="fa fa-plus"></i>&nbsp;&nbsp;<span
+                                class="bold">添加</span></button>
                     </div>
+                    <table class="table table-striped table-bordered table-hover ">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>手机号码</th>
+                            <th>管理</th>
+                            <!--                                    <th>添加人</th>-->
+                            <!--                                    <th>创建时间</th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $userList as $key=>$obj}
+                        <tr class="gradeX">
+                            <td>{$obj->id}</td>
+                            <td>{$obj->username}</td>
+                            <td>{$obj->phone}</td>
+                            <td width="200px"><a style="color: red" onclick="doDelete('{$obj->id}','{$obj->username}')">删除 </a><a
+                                    onclick="doEditOnClick('{$obj}')">编辑</a></a></td>
+                            <!--                                <td class="center">{$obj->uid}</td>-->
+                            <!--                                <td class="center"><?php echo date('Y-m-d H:i:s',$obj->createtime) ?></td>-->
+
+                        </tr>
+                        {/foreach}
+                        </tbody>
+
+                    </table>
+
+
                 </div>
             </div>
         </div>
     </div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-backdrop="false"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    编辑用户
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form method="get" class="form-horizontal">
+                    <div class="form-group" style="display: none">
+                        <label class="col-sm-2 control-label">用户名</label>
 
-    <!-- 全局js -->
-    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
-    <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="uid">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">用户名</label>
 
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="uname">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">手机号</label>
 
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="uphone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">用户类型</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="urole" id="optionsRadios1" value="1" > 超级管理员
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="urole" id="optionsRadios2"  value="2" > 普通用户
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0px">
+                        <label class="col-sm-2 control-label">登录密码</label>
 
-    <script src="/static/js/plugins/jeditable/jquery.jeditable.js"></script>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="upasswd">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary" onclick="doEdit()" id="btnName">
+                    保存
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
-    <!-- Data Tables -->
-    <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<!-- 全局js -->
+<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
 
-    <!-- 自定义js -->
-    <script src="/static/js/content.js?v=1.0.0"></script>
-    <!-- Sweet alert -->
-    <script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="/static/js/plugins/jeditable/jquery.jeditable.js"></script>
 
-    <!-- Page-Level Scripts -->
-    <script>
-        $(document).ready(function () {
-            $('.dataTables-example').dataTable();
+<!-- Data Tables -->
+<script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
-            /* Init DataTables */
-            var oTable = $('#editable').dataTable();
+<!-- 自定义js -->
+<script src="/static/js/content.js?v=1.0.0"></script>
+<!-- Sweet alert -->
+<script src="/static/js/plugins/sweetalert/sweetalert.min.js"></script>
 
-            /* Apply the jEditable handlers to the table */
-            oTable.$('td').editable('../example_ajax.php', {
-                "callback": function (sValue, y) {
-                    var aPos = oTable.fnGetPosition(this);
-                    oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-                },
-                "submitdata": function (value, settings) {
-                    return {
-                        "row_id": this.parentNode.getAttribute('id'),
-                        "column": oTable.fnGetPosition(this)[2]
-                    };
-                },
+<!-- Page-Level Scripts -->
+<script>
+    $(document).ready(function () {
+        $('.dataTables-example').dataTable();
 
-                "width": "90%",
-                "height": "100%"
-            });
+        /* Init DataTables */
+        var oTable = $('#editable').dataTable();
 
+        /* Apply the jEditable handlers to the table */
+        oTable.$('td').editable('../example_ajax.php', {
+            "callback": function (sValue, y) {
+                var aPos = oTable.fnGetPosition(this);
+                oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+            },
+            "submitdata": function (value, settings) {
+                return {
+                    "row_id": this.parentNode.getAttribute('id'),
+                    "column": oTable.fnGetPosition(this)[2]
+                };
+            },
 
+            "width": "90%",
+            "height": "100%"
         });
-        function deleteUser($id,$userName) {
-            swal({
-                title:  '是否删除用户 '+ $userName,
-                text: "删除后将无法恢复，请谨慎操作！",
-                type: "warning",
-                showCancelButton: true,
-                cancelButtonText: "取消",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "删除",
-                closeOnConfirm: false
-            }, function () {
-                $.post('/index.php/account/dologin', {'id': $id}, function (res) {
-                    if (res.code !== 200) {
-                        swal("删除成功！", "您已经永久删除了这条信息。", "success");
-                    } else {
-                        parent.layer.msg(res.message);
-                        // setTimeout(function () {
-                        //     window.location.href = '/index.php/index'
-                        // }, 100)
-                    }
-                }, 'json');
 
-            });
+
+    });
+
+    function doDelete($id, $userName) {
+        swal({
+            title: '是否删除用户 ' + $userName,
+            text: "删除后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "取消",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            closeOnConfirm: false
+        }, function () {
+            $.post('/index.php/account/doDelete', {'id': $id}, function (res) {
+                if (res.code !== 200) {
+                    swal("删除失败！", res.message, "success");
+                } else {
+                    swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
+                }
+            }, 'json');
+        });
+    }
+
+    function doEditOnClick($user) {
+        const u = JSON.parse($user);
+        $('#myModal').modal('show');
+        $('#uid').val(u.id);
+        $('#uname').val(u.username);
+        $('#uphone').val(u.phone);
+        $('#upasswd').val(u.userpawd);
+
+        $("input[name='urole'][value='" + u.userrole + "']").prop("checked", true);
+    }
+
+    function doAddOnClick() {
+        $('#myModal').modal('show');
+        $('#uid').val(-1);
+        $('#uname').val('');
+        $('#uphone').val('');
+        $('#upasswd').val('');
+        $('#btnName').val('添加');
+        $("input[name='urole'][value='" + 2 + "']").prop("checked", true);
+    }
+
+    function doEdit() {
+        const uid = $('#uid').val();
+        const uname = $('#uname').val();
+        const uphone = $('#uphone').val();
+        const upasswd = $('#upasswd').val();
+        const urole= $("input[name='urole']:checked").val();
+        if (uname.trim() === '') {
+            parent.layer.msg('请输入用户名');
+            return;
         }
-    </script>
-
+        if (upasswd.trim() === '') {
+            parent.layer.msg('请输入密码');
+            return;
+        }
+        if (urole === undefined||urole===null||urole==='') {
+            parent.layer.msg('请选择用户类型');
+            return;
+        }
+        $.post('/index.php/Account/doEdit', {'uid':uid,'uname': uname, 'uphone': uphone,'upasswd':upasswd,'urole':urole}, function (res) {
+            if (res.code !== 200) {
+                parent.layer.msg(res.message);
+            } else {
+                parent.layer.msg(res.message);
+                window.location.reload();
+                $('#myModal').modal('hide');
+            }
+        }, 'json');
+    }
+</script>
 </body>
 
 </html>

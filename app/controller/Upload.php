@@ -12,14 +12,14 @@ use think\facade\Request;
 use think\facade\Validate;
 use think\facade\View;
 
-class UpLoad extends BaseController
+class Upload extends BaseController
 {
     public function index()
     {
         return View::fetch('upload');
     }
 
-    public function upload()
+    public function uploadImg()
     {
         $uploadedFile = Request::file('image');
         //编写规则
@@ -60,6 +60,7 @@ class UpLoad extends BaseController
         ]);
 
         $uname = $this->request->uname;
+        $uid = $this->request->uid;
         if ($result) {
             $identify = \PHPExcel_IOFactory::identify($uploadedFile);
             $reader = \PHPExcel_IOFactory::createReader($identify);
@@ -69,8 +70,10 @@ class UpLoad extends BaseController
             unset($sheetContent[0]);
             foreach ($sheetContent as $k => $value) {
                 $arr['name'] = $value[0];
-                $arr['uname']=$uname;
-                $arr['createtime'] =time();
+                $arr['uid'] = $uid;
+                $arr['uname'] = $uname;
+                $arr['order'] = "1";
+                $arr['createtime'] = time();
                 $res[] = $arr;
             }
             $insert = (new Brand())->insertAll($res);
